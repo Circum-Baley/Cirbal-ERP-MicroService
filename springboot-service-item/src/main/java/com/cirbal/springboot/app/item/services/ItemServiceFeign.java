@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import com.cirbal.springboot.app.commons.models.entity.Product;
 import com.cirbal.springboot.app.item.clientes.ProductoClienteRest;
 import com.cirbal.springboot.app.item.models.Item;
 
@@ -22,7 +22,7 @@ public class ItemServiceFeign implements ItemService {
 	}
 
 	@Override
-	public Item findById(Long id, Integer cantidad) {
+	public Item findByIdCantidad(Long id, Integer cantidad) {
 		return new Item(productoClienteRest.detaildById(id), cantidad);
 	}
 
@@ -31,4 +31,22 @@ public class ItemServiceFeign implements ItemService {
 		productoClienteRest.deleteById(id);
 	}
 
+	@Override
+	public Product create(Product product) {
+//		Product producto =
+		return productoClienteRest.create(product);
+//		return producto;
+	}
+
+	@Override
+	public Product updateProduct(Product product, Long id) {
+		Product productUpdate = productoClienteRest.updateProduct(product, id);
+		return productUpdate;
+	}
+
+	@Override
+	public Product findById(Long id) {
+		Product itemByProductId = productoClienteRest.detaildById(id);
+		return itemByProductId;
+	}
 }
