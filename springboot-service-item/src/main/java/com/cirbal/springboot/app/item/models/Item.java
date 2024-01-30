@@ -1,5 +1,7 @@
 package com.cirbal.springboot.app.item.models;
 
+import com.cirbal.springboot.app.commons.models.entity.Product;
+
 public class Item {
 
 	private Product product;
