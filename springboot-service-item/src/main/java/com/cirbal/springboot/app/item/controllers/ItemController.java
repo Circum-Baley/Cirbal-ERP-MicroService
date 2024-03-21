@@ -1,12 +1,15 @@
 
 package com.cirbal.springboot.app.item.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +32,12 @@ public class ItemController {
 
 	private static final Logger log = LoggerFactory.getLogger(ItemController.class);
 
+	@Value("${configuracion.texto}")
+	private String textString;
+
 	@Autowired
 	private CircuitBreakerFactory<?, ?> circutBFactory;
+
 	@Autowired
 	@Qualifier("itemServiceFeign")
 	private ItemService itemService;
@@ -112,5 +119,14 @@ public class ItemController {
 	public Product updateProduct(@RequestBody Product product, @PathVariable Long id) {
 		Product ItemByIdProduct = itemService.updateProduct(product, id);
 		return ItemByIdProduct;
+	}
+
+	@GetMapping("/getConfig")
+	public ResponseEntity<?> getConfig(@Value("${server.port}") String port) {
+		Map<String, String> jsonMap = new HashMap<>();
+		jsonMap.put("text", textString);
+		jsonMap.put("port", port);
+
+		return new ResponseEntity<Map<String, String>>(jsonMap, HttpStatus.OK);
 	}
 }
