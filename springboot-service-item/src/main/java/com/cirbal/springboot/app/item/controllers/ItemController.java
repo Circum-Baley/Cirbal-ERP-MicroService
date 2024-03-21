@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import com.cirbal.springboot.app.item.models.Item;
 import com.cirbal.springboot.app.commons.models.entity.Product;
 import com.cirbal.springboot.app.item.services.ItemService;
 
+@RefreshScope
 @RestController
 //@RequestMapping("/api/items")
 public class ItemController {
