@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,6 +33,9 @@ public class ItemController {
 
 	private static final Logger log = LoggerFactory.getLogger(ItemController.class);
 
+	@Autowired
+	private Environment environment;
+	
 	@Value("${configuracion.texto}")
 	private String textString;
 
@@ -126,7 +130,10 @@ public class ItemController {
 		Map<String, String> jsonMap = new HashMap<>();
 		jsonMap.put("text", textString);
 		jsonMap.put("port", port);
-
+		if(environment.getActiveProfiles().length>0 && environment.getActiveProfiles()[0].equals("dev")) {
+			jsonMap.put("autor.nombre", environment.getProperty("configuracion.autor.nombre"));
+			jsonMap.put("autor.email", environment.getProperty("configuracion.autor.email"));
+		}	
 		return new ResponseEntity<Map<String, String>>(jsonMap, HttpStatus.OK);
 	}
 }
