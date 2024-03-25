@@ -30,23 +30,22 @@ import com.cirbal.springboot.app.item.services.ItemService;
 
 @RefreshScope
 @RestController
-//@RequestMapping("/api/items")
 public class ItemController {
 
 	private static final Logger log = LoggerFactory.getLogger(ItemController.class);
-
+	
+	@Autowired
+	@Qualifier("itemServiceFeign")
+	private ItemService itemService;
+	
 	@Autowired
 	private Environment environment;
-	
-	@Value("${configuracion.texto}")
+
+//	@Value("${configuracion.texto}")
 	private String textString;
 
 	@Autowired
 	private CircuitBreakerFactory<?, ?> circutBFactory;
-
-	@Autowired
-	@Qualifier("itemServiceFeign")
-	private ItemService itemService;
 
 	@GetMapping("/list")
 	public List<Item> findAlll() {
@@ -132,10 +131,10 @@ public class ItemController {
 		Map<String, String> jsonMap = new HashMap<>();
 		jsonMap.put("text", textString);
 		jsonMap.put("port", port);
-		if(environment.getActiveProfiles().length>0 && environment.getActiveProfiles()[0].equals("dev")) {
+		if (environment.getActiveProfiles().length > 0 && environment.getActiveProfiles()[0].equals("dev")) {
 			jsonMap.put("autor.nombre", environment.getProperty("configuracion.autor.nombre"));
 			jsonMap.put("autor.email", environment.getProperty("configuracion.autor.email"));
-		}	
+		}
 		return new ResponseEntity<Map<String, String>>(jsonMap, HttpStatus.OK);
 	}
 }
