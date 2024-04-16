@@ -13,14 +13,14 @@ import com.cirbal.springboot.app.commons.users.models.entity.User;
 public interface UserFeignClient {
 
 	@GetMapping("/users/search/find-username")
-	public User findUserByUsername(@RequestParam String username);
+	public User findByUsername(@RequestParam String username);
 
 	@PostMapping("/createUser")
-	public User create(User user);
+	public User createUser(User user);
 
-	@PutMapping("/userE dit/{id}")
-	public User edit(@RequestParam Long id, User us);
+	@PutMapping("/updateUser/{id}")
+	public User updateUser(@RequestParam Long id, User us);
 
 	@DeleteMapping("/userDelete/{id}")
-	public void delete(@RequestParam Long id);
+	public void userDelete(@RequestParam Long id);
 }
