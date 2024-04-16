@@ -17,7 +17,7 @@ import com.cirbal.springboot.app.commons.users.models.entity.User;
 import com.cirbal.springboot.app.oauth.clients.UserFeignClient;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService, IUserService {
 
 	private static Logger logger = LoggerFactory.getLogger(UserService.class);
 	@Autowired
@@ -25,7 +25,7 @@ public class UserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userFeignClient.findUserByUsername(username);
+		User user = userFeignClient.findByUsername(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("Error, User don't exists;");
 		}
@@ -35,5 +35,15 @@ public class UserService implements UserDetailsService {
 		logger.info("User" + username + "Authenticated");
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
 				user.getEnable(), true, true, true, authorities);
+	}
+
+	@Override
+	public User findByUsername(String username) {
+		return userFeignClient.findByUsername(username);
+	}
+
+	@Override
+	public User userUpdate(User user, Long id) {
+		return userFeignClient.updateUser(id, user);
 	}
 }
