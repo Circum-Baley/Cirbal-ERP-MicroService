@@ -50,7 +50,7 @@ public class AuthenticationSuccessErrorHandler implements AuthenticationEventPub
 		try {
 			User user = iUserService.findByUsername(authentication.getName());
 
-			if (user == null) {
+			if (user != null) {
 				if (user.getIntentInteger() == null) {
 					user.setIntentInteger(0);
 				}
@@ -61,7 +61,7 @@ public class AuthenticationSuccessErrorHandler implements AuthenticationEventPub
 				if (user.getIntentInteger() >= 3) {
 					user.setEnable(false);
 					log.error(String.format("*******************************************************\n"
-							+ "**************El usuario %s esta desahibilitado*******************\n"
+							+ "**************El usuario {} esta desahibilitado*******************\n"
 							+ user.getUsername()));
 
 				}
