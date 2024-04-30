@@ -33,9 +33,7 @@ public class ItemServiceFeign implements ItemService {
 
 	@Override
 	public Product create(Product product) {
-//		Product producto =
 		return productoClienteRest.create(product);
-//		return producto;
 	}
 
 	@Override
