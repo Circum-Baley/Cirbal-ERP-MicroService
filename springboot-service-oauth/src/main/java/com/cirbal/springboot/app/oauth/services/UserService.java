@@ -17,9 +17,10 @@ import com.cirbal.springboot.app.commons.users.models.entity.User;
 import com.cirbal.springboot.app.oauth.clients.UserFeignClient;
 
 @Service
-public class UserService implements UserDetailsService, IUserService {
+public class UserService implements IUserService, UserDetailsService {
 
-	private static Logger logger = LoggerFactory.getLogger(UserService.class);
+	private Logger logger = LoggerFactory.getLogger(UserService.class);
+
 	@Autowired
 	private UserFeignClient userFeignClient;
 
@@ -39,7 +40,20 @@ public class UserService implements UserDetailsService, IUserService {
 
 	@Override
 	public User findByUsername(String username) {
-		return userFeignClient.findByUsername(username);
+		try {
+			User userF = userFeignClient.findByUsername(username);
+			if (userF.getUsername() == null || userF.getUsername().isEmpty()) {
+				throw new IllegalArgumentException("The User With Name :" + username + " Not Exists");
+			}
+			return userF;
+		} catch (IllegalArgumentException Il) {
+			logger.info("Illegal Argument Exception : " + Il.getMessage());
+		} catch (Exception e) {
+			logger.info("Error En el findByUsername" + e.getMessage());
+		} catch (Throwable t) {
+			logger.info("Unexpected Error Occurred : " + t.getMessage());
+		}
+		return null;
 	}
 
 	@Override
