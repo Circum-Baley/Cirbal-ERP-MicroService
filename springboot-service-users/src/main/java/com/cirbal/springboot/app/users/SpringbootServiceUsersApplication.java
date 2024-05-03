@@ -9,11 +9,9 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableEurekaClient
 @EntityScan({ "com.cirbal.springboot.app.commons.users.models.entity" })
-@ComponentScan("com.cirbal.springboot.app")
+//@ComponentScan("com.cirbal.springboot.app")
 public class SpringbootServiceUsersApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootServiceUsersApplication.class, args);
 	}
-
 }
